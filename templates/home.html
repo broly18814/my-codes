@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Streamlined FWI Predictions</title>
+    <style>
+        /* Basic styles for presentation */
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column; 
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+        .login {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: left;
+            width: 350px;
+            margin-bottom: 20px; 
+        }
+        .prediction-result {
+            margin-top: 20px;
+            padding: 15px;
+            border: 2px solid #5cb85c;
+            border-radius: 8px;
+            background-color: #e6ffe6;
+            color: #333;
+            font-size: 1.2em;
+            font-weight: bold;
+            text-align: center;
+            width: 350px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        h1 {
+            margin-bottom: 10px;
+            color: #333;
+            text-align: center;
+        }
+        label {
+            display: block;
+            margin-top: 5px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+        input, button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box; 
+        }
+        button {
+            background-color: #5cb85c;
+            color: white;
+            cursor: pointer;
+            border: none;
+            margin-top: 15px;
+        }
+        button:hover {
+            background-color: #4cae4c;
+        }
+        .section-header {
+            text-align: center;
+            font-weight: bold;
+            margin: 15px 0 5px 0;
+            border-top: 1px solid #eee;
+            padding-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login">
+        <h1>FWI Prediction Features</h1>
+        <form action="{{ url_for('predict_datapoint') }}" method="post">
+            
+            <div class="section-header">Daily Weather Inputs</div>
+            
+            <label for="temp">Temperature (C):</label>
+            <input type="number" id="temp" name="Temperature" placeholder="e.g., 29" step="1" required><br>
+            
+            <label for="rh">Relative Humidity (%):</label>
+            <input type="number" id="rh" name="RH" placeholder="e.g., 57" min="0" max="100" required><br>
+            
+            <label for="ws">Wind Speed (km/h):</label>
+            <input type="number" id="ws" name="Ws" placeholder="e.g., 18" step="1" required><br>
+
+            <label for="rain">Rain (mm):</label>
+            <input type="number" id="rain" name="Rain" placeholder="e.g., 0.0" step="0.1" min="0" required><br>
+
+            
+            <div class="section-header">Fuel Moisture & Spread Indices</div>
+            
+            <label for="ffmc">FFMC:</label>
+            <input type="number" id="ffmc" name="FFMC" placeholder="e.g., 85.0" step="0.1" required><br>
+
+            <label for="dmc">DMC:</label>
+            <input type="number" id="dmc" name="DMC" placeholder="e.g., 10.0" step="0.1" required><br>
+            
+            <label for="isi">ISI:</label>
+            <input type="number" id="isi" name="ISI" placeholder="e.g., 5.0" step="0.1" required><br>
+
+            
+            <div class="section-header">Encoded Inputs</div>
+            <label for="classes">Classes:</label>
+            <input type="number" id="classes" name="Classes" placeholder="0.0 (not fire) or 1.0 (fire)" step="1" min="0" max="1" required><br>
+            
+            <label for="region">Region:</label>
+            <input type="number" id="region" name="Region" placeholder="0 or 1" min="0" max="1" required><br>
+
+            
+            <button type="submit">Predict</button>
+        </form>
+    </div>
+    
+    {% if result is defined %}
+    <div class="prediction-result">
+        The **FWI Prediction** is **{{ result | round(2) }}** </div>
+    {% endif %}
+
+</body>
+</html>
